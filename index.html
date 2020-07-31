@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <style>
+        body {
+  font-family: sans-serif;
+  display: grid;
+  height: 100vh;
+  place-items: center;
+}
+
+.base-timer {
+  position: relative;
+  width: 300px;
+  height: 300px;
+}
+
+.base-timer__svg {
+  transform: scaleX(-1);
+}
+
+.base-timer__circle {
+  fill: none;
+  stroke: none;
+}
+
+.base-timer__path-elapsed {
+  stroke-width: 7px;
+  stroke: grey;
+}
+
+.base-timer__path-remaining {
+  stroke-width: 7px;
+  stroke-linecap: round;
+  transform: rotate(90deg);
+  transform-origin: center;
+  transition: 1s linear all;
+  fill-rule: nonzero;
+  stroke: currentColor;
+}
+
+.base-timer__path-remaining.green {
+  color: rgb(65, 184, 131);
+}
+
+.base-timer__path-remaining.orange {
+  color: orange;
+}
+
+.base-timer__path-remaining.red {
+  color: red;
+}
+
+.base-timer__label {
+  position: absolute;
+  width: 300px;
+  height: 300px;
+  top: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 48px;
+}
+
+    </style>
+</head>
+<body>
+    <div id="myTodoList">
+        <div>
+            <input type="text" name="todo" id="todo" placeholder="Notez votre tache">
+            <label for="nb_pomo">Nombre de pomodoro de la tache</label>
+            <input type="number" name="nb_pomo" id="nb_pomo">
+            <input type="button" value="+" id="add">
+        </div>
+        <div>
+            <ul id="list_todo">
+
+            </ul>
+        </div>
+    </div>
+    <div id =" myPomodoro">
+        <div class="container">
+            <div id="tache">
+                clicqué dans la todo-liste pour selectionner votre tache
+             
+
+            </div>
+            <div id ="duree">tt</div>
+            <button id="play" onclick="chrono()">Démarrer</button>
+            <div id="temps"></div>
+
+
+        </div>
+
+    </div>
+    <script>
+       let count_id = 0;
+
+        document.getElementById("add").addEventListener("click", addTodo);
+      
+       
+    
+        function addTodo()
+        { 
+            //variable
+            
+            let todo_list = document.getElementById("list_todo");
+            let todo = document.createElement('li');
+            let todo_label=document.createElement('span');
+            let todo_check = document.createElement("input");
+            let todo_time = document.createElement("span");
+            let todo_delete_button = document.createElement("button");
+            let tache = document.getElementById('tache').innerHTML.value;
+            
+            //type
+
+            todo_check.type ="checkbox";
+
+            //value
+
+            todo_label.innerText = document.getElementById("todo").value;
+            todo_time.innerText = document.getElementById("nb_pomo").value;
+            todo_delete_button.innerText = "Delete";
+            //function
+            todo_delete_button.onclick = delete_todo;
+            todo_label.onclick = show_todo;
+        
+            //class
+
+            todo_check.className="todo_check";
+            todo_time.className="todo_time";
+            todo_delete_button.className = "delete_button";
+
+            //appendChild
+
+            todo_list.appendChild(todo);
+            todo.appendChild(todo_label);
+            todo.appendChild(todo_time);
+            todo.appendChild(todo_check);
+            todo.appendChild(todo_delete_button);
+            //generation id todo
+
+            todo.id= count_id;
+            todo_delete_button.id= "delete_"+ count_id;
+            count_id ++;
+        }
+
+        function delete_todo()
+        {
+         this.parentNode.parentNode.removeChild(this.parentNode);
+        }
+
+       function show_todo()
+       {
+         
+          document.getElementById('tache').innerText = this.innerText ;
+          document.getElementById('duree').innerText=this.nextSibling.innerHTML;
+         
+       }
+
+       function get_pomodoro()
+       {
+          let nb_pomodoro = document.getElementById('duree').innerText;
+          return Number(nb_pomodoro);
+       }
+
+       function cycle_pomodoro()
+       {
+         let periode_travail = 1500000; // 25 minute en ms
+         let petite_pause = 300000; // 5 minute en ms 
+         let longue_pause = 1200000;// 20 minute en ms
+         let nb_pomodoro = Number(document.getElementById('duree').innerText);
+         let cycle_complet = [ periode_travail,petite_pause,periode_travail,petite_pause,periode_travail,petite_pause,periode_travail,longue_pause ];
+         let cycle_Temp = [];
+         let cycle_final =[];
+
+         //for (let i = 1 ; i = nb_pomodoro; i++ )
+         //{
+           console.log(nb_pomodoro);
+           if(nb_pomodoro % 4 == 0 )
+           {
+              let nb_cycle_complet = nb_pomodoro / 4;
+                for (let y = 1; y <= nb_cycle_complet; y++ )
+                {
+                   Array.prototype.push.apply(cycle_Temp, cycle_complet);
+                  console.log(y);
+                }
+           }
+           if(nb_pomodoro % 4 != 0)
+           {
+             if (nb_pomodoro <= 4)
+             {
+               for(let ii = 1; ii <= nb_pomodoro; ii++)
+               {
+                 console.log('ii : '+ii);
+                 cycle_Temp.push(periode_travail,petite_pause);
+               }
+             }
+             if(nb_pomodoro > 4 )
+             {
+               for (let yy = 1; yy <= nb_pomodoro; yy++)
+               {
+                 console.log('yy : '+yy);
+                 if(yy % 4 == 0)
+                 {
+                    cycle_Temp.push(periode_travail,longue_pause);
+                 }
+                 else
+                 {
+                   cycle_Temp.push(periode_travail,petite_pause);
+                 }
+               }
+             } 
+           }
+         console.log(cycle_Temp);
+         return cycle_Temp
+       }
+       function chrono()
+       {
+        array_cycle_pomodoro=cycle_pomodoro();
+       let temp_total_cycle_pomodoro = 0 
+        for(let i = 0; i<= array_cycle_pomodoro.length-1; i++){
+          temp_total_cycle_pomodoro = temp_total_cycle_pomodoro + array_cycle_pomodoro[i];
+          console.log(temp_total_cycle_pomodoro);
+        }
+        let depart_tache = Date.now();
+        let fin_tache = depart_tache + temp_total_cycle_pomodoro;
+        let duree_tache = fin_tache - depart_tache;
+
+       
+        for (let y = 0; y<=array_cycle_pomodoro.length;y++ )
+        {
+          let t_minute = array_cycle_pomodoro[y]/60000;
+          let t_seconde = array_cycle_pomodoro[y]/1000;
+            document.getElementById('temps').innerText = t_minute;
+            for (let yy =0 ; yy <= t_seconde; y++)
+            {
+              setInterval(function(){ document.getElementById('temps').innerHTML = t_seconde - 1; }, 1000);
+            }
+        }
+            
+
+        
+
+
+
+
+
+
+        console.log("depart: "+depart_tache);
+        console.log("fin: "+fin_tache);
+        console.log(duree_tache);
+        console.log(array_cycle_pomodoro);
+       }
+
+   
+
+
+    </script>
+</body>
+
+</html>
