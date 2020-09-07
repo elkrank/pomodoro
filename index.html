@@ -1,0 +1,111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" integrity="sha384-JcKb8q3iqJ61gNV9KGb8thSsNjpSL0n8PARn9HuZOnIxN0hoP+VmmDGMN5t9UJ0Z" crossorigin="anonymous">
+
+  </head>
+  <style>
+    *{
+      margin:0;
+      padding:0;
+    }
+    main{
+      margin:auto;
+    margin-top : 75px;
+    }
+    #temps {
+     padding-top:70px;
+      margin:auto;
+      margin-top:16px;
+      font-size : 35px;
+      font-weight: 900;
+      text-align:center;
+      width: 212px;
+      height: 210px;
+      border : 4px dashed white;
+      border-radius:50%;
+
+      color:white;
+    }
+    #tache{
+      font-size : 35px;
+      font-weight: 900;
+      text-align: center;
+    }
+    #play{
+      margin:auto;
+      text-align:center;
+    }
+    .container_duree{
+      display:flex;
+      text-align:center;
+      justify-content:center;
+    }
+    .container_button{
+     margin:auto;
+    }
+    #duree,.duree{
+      text-align: center;
+      font-size:26px;
+      font-weight: 700;
+
+    }
+    #duree{
+      margin-right: 5px;
+    }
+
+    .list-group-item{
+      width:100%;
+      margin:auto;
+      
+    }
+    .label{
+      cursor:grab;
+    }
+
+  </style>
+<body>
+  <main class="container">
+    <div class="row">
+    <div id="myTodoList" class="container col-md-6 ">
+        <div class="form-group row ">
+            <input type="text" class="input-group-text col-sm"name="todo" id="todo" placeholder="Notez votre tache">
+            <label for="nb_pomo"class="input-group-prepend col-sm">Nombre de pomodoro de la tache</label>
+            <input type="number" class="input-group-text col-sm"  name="nb_pomo" id="nb_pomo" value="0" min="1" max="" step="1">
+            <input type="button"class="btn btn-dark col-sm"value="Ajouter" id="add">
+        </div>
+        <div>
+            <ul id="list_todo" class="list-group ">
+
+            </ul>
+        </div>
+    </div>
+    <div id =" myPomodoro" class="col-md-6">
+        <div class="container d-flex flex-column">
+            <div id="tache">
+                clicqué dans la todo-liste pour selectionner votre tache
+             
+
+            </div>
+            <div class="container_duree">
+            <div id ="duree"></div><div class="duree">Pomodoro</div>
+            </div>
+            <div class="container_button">
+            <button id="play"class="btn btn-dark" onclick="chrono()">Démarrer</button>
+            <button id="pause"class="btn btn-dark" onclick="">Stop</button>
+            </div>
+            <div id="temps" class="bg-primary"></div> 
+            
+
+        </div>
+
+    </div>
+    </div>
+    </main>
+   <script src="app.js"></script>
+</body>
+
+</html>
